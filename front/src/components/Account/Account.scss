@@ -1,0 +1,7 @@
+.account {
+    display: flex;
+    padding-left: 20px;
+    & div {
+        margin-right: 10px;
+    }
+}

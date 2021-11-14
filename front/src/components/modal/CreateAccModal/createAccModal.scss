@@ -1,0 +1,18 @@
+.create-acc-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 30%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+
+        & select {
+            margin-bottom: 25px;
+        }
+}

@@ -1,0 +1,11 @@
+.customer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+        & .info {
+            display: flex;
+            & > * {
+                margin-right: 10px;
+            }
+        }
+}
