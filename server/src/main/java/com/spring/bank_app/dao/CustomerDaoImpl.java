@@ -68,9 +68,10 @@ public class CustomerDaoImpl implements Dao<Customer> {
         return toReturn;
     }
 
-    public void update(CustomerDto customerDto) {
+    public Customer update(CustomerDto customerDto) {
         Customer customer = getOne(customerDto.getId());
         customer.setName(customerDto.getName());
         customer.setEmail(customerDto.getEmail());
+        return customer;
     }
 }

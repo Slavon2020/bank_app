@@ -1,8 +1,10 @@
 package com.spring.bank_app.controller;
 
-import com.spring.bank_app.dto.AccountDto;
+import com.spring.bank_app.dto.AccountDto.AccountDto;
+import com.spring.bank_app.dto.AccountDto.TransferMoneyDto;
+import com.spring.bank_app.dto.AccountDto.UpdateAccountDto;
 import com.spring.bank_app.model.Account;
-import com.spring.bank_app.services.AccountService;
+import com.spring.bank_app.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,16 @@ public class AccountController {
     @GetMapping
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
+    }
+
+    @PutMapping
+    public Account updateAccount(@RequestBody UpdateAccountDto updateAccountDto) {
+     return accountService.updateAccount(updateAccountDto);
+    }
+
+    @PutMapping("/transfer")
+    public TransferMoneyDto transferMoney(@RequestBody TransferMoneyDto transferMoneyDto) {
+        return accountService.transferMoney(transferMoneyDto);
     }
 
     @DeleteMapping

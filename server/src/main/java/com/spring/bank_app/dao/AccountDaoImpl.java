@@ -1,5 +1,6 @@
 package com.spring.bank_app.dao;
 
+import com.spring.bank_app.dto.AccountDto.UpdateAccountDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Account;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,6 @@ public class AccountDaoImpl implements Dao<Account> {
     AccountDaoImpl() {
         this.accounts = new ArrayList<>();
     }
-
 
     @Override
     public Account save(Account account) {
@@ -45,7 +45,7 @@ public class AccountDaoImpl implements Dao<Account> {
     }
 
     @Override
-    public List findAll() {
+    public List<Account> findAll() {
         return this.accounts;
     }
 
@@ -71,5 +71,27 @@ public class AccountDaoImpl implements Dao<Account> {
             }
         }
         return toReturn;
+    }
+
+    public Account updateAccount(String accNumber, Double newBalance) {
+        Account currentAcc = getAccountByNumber(accNumber);
+        currentAcc.setBalance(newBalance);
+        return currentAcc;
+    }
+
+    public void increaseBalance(String accNumber, Double diff) {
+        Account account = getAccountByNumber(accNumber);
+        account.setBalance(account.getBalance() + diff);
+    }
+
+    public boolean decreaseBalance(String accNumber, Double diff) {
+        boolean isOperationPassed = false;
+        Account account = getAccountByNumber(accNumber);
+        Double currentBalance = account.getBalance();
+        if (currentBalance >= diff) {
+            account.setBalance(account.getBalance() - diff);
+            isOperationPassed = true;
+        }
+        return isOperationPassed;
     }
 }

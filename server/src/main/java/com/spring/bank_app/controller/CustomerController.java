@@ -2,7 +2,7 @@ package com.spring.bank_app.controller;
 
 import com.spring.bank_app.dto.CustomerDto;
 import com.spring.bank_app.model.Customer;
-import com.spring.bank_app.services.CustomerService;
+import com.spring.bank_app.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -35,8 +35,8 @@ public class CustomerController {
         return this.customerService.createCustomer(customer);
     }
     @PutMapping
-    public void updateCustomer(@RequestBody CustomerDto customerDto) {
-        customerService.changeCustomerInfo(customerDto);
+    public Customer updateCustomer(@RequestBody CustomerDto customerDto) {
+        return customerService.updateCustomer(customerDto);
     }
 
     @DeleteMapping
