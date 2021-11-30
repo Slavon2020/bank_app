@@ -116,9 +116,9 @@ export default function Customer (props: Props) {
   const createAccountBody = () => (
     <div className={classes.editFieldsWrap}>
       <div className={classes.createAccBlock}>
-        <InputLabel id="demo-simple-select-label">Currency</InputLabel>
+        <InputLabel id="currency">Currency</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
+          labelId="currency"
           id="demo-simple-select"
           value={currency}
           onChange={(e) => setCurrency(e.target.value as string)}

@@ -3,6 +3,7 @@ import { compose } from "redux";
  
 export type STORE = {
     customers: Array<TCustomer>;
+    employers: Array<TEmployer>;
 }
 
 export type TCustomer = {
@@ -22,7 +23,7 @@ export type TAccount = {
 }
 
 export type UpdateAccountData = {
-    number: string,
+    id: number,
     balance: number
 }
 
@@ -43,6 +44,17 @@ export type UpdateCustomerData = {
 export type CreateAccountData = {
     customerId: number;
     currency: Currency;
+}
+
+export type CreateEmployerData = {
+    name: string;
+    address: string;
+}
+
+export type TEmployer = {
+    id: number;
+    name: string;
+    address: string;
 }
 
 export type TransferMoneyData = {

@@ -30,6 +30,7 @@ public class AccountController {
 
     @PutMapping
     public Account updateAccount(@RequestBody UpdateAccountDto updateAccountDto) {
+        System.out.println(updateAccountDto);
      return accountService.updateAccount(updateAccountDto);
     }
 

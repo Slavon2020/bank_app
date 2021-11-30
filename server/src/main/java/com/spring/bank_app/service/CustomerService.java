@@ -33,20 +33,14 @@ public class CustomerService {
         return customerDaoImpl.update(customerDto);
     }
 
-    public boolean deleteCustomer(Long id) {
-        boolean isDeleted = false;
-        Customer customerToDelete = this.customerDaoImpl.getOne(id);
-        if (customerToDelete != null) {
-            this.customerDaoImpl.delete(customerToDelete);
-            isDeleted = true;
-        }
-        return isDeleted;
+    public boolean deleteCustomer(long id) {
+        return customerDaoImpl.deleteById(id);
     }
 
-    public void createCustomerAccount(Customer customer, Currency currency) {
-        System.out.println("create account");
-        System.out.println("customer --- " + customer);
-        System.out.println("currency --- " + currency);
+    public boolean deleteCustomer(Customer customer) {
+
+        return customerDaoImpl.delete(customer);
     }
+
     public void deleteCustomerAccount(Customer customer) {}
 }

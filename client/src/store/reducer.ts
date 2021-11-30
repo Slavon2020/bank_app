@@ -3,7 +3,8 @@ import { updateCustomers, updateCustomersAccounts } from "../utils/utilFunctions
 import { constants } from "./constants";
 
 const initialStore: STORE = {
-	customers: []
+	customers: [],
+	employers: []
 }
 
 // TODO type ANY
@@ -43,6 +44,12 @@ export const reducer = (state = initialStore, action: any) => {
 				...state,
 				customers: customersWithUpdatedAcc
 			}
+
+		case constants.SET_EMPLOYERS:
+			return {...state, employers: payload}
+
+		case constants.SAVE_EMPLOYER:
+			return {...state, employers: [...state.employers, payload]}
 		
 		default:
 			return state;

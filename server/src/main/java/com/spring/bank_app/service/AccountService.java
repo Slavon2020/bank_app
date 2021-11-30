@@ -10,6 +10,7 @@ import com.spring.bank_app.model.Currency;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -27,7 +28,6 @@ public class AccountService {
         Currency currency = accountDto.getCurrency();
         Customer customer = customerDao.getOne(customerId);
         Account newAccount = accountDao.save(new Account(customer, currency));
-        customer.addAccount(newAccount);
         return newAccount;
     }
 
@@ -36,17 +36,17 @@ public class AccountService {
     }
 
     public Account updateAccount(UpdateAccountDto updateAccountDto) {
-        String accNumber = updateAccountDto.getNumber();
+        Long id = updateAccountDto.getId();
         Double newBalance = updateAccountDto.getBalance();
-        return accountDao.updateAccount(accNumber, newBalance);
+        return accountDao.updateAccountBalance(id, newBalance);
     }
 
     public void deleteAccount(String number) {
         Account accountToDelete = accountDao.getAccountByNumber(number);
         accountDao.delete(accountToDelete);
-        accountToDelete.getCustomer().deleteAccount(accountToDelete);
     }
 
+    @Transactional
     public TransferMoneyDto transferMoney(TransferMoneyDto transferMoneyDto) {
         String accNumberFrom = transferMoneyDto.getAccNumberFrom();
         Double sumAccFrom = transferMoneyDto.getSumAccFrom();

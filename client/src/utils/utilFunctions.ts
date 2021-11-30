@@ -13,7 +13,7 @@ export const updateCustomersAccounts = (customers: Array<TCustomer>, account: TA
     const customersWithoutCurrent = customers.filter(customer => customer.id !== currentCustomer.id);
 
     if (action === 'add') {
-        currentCustomer.accounts = [...currentCustomer.accounts, account];
+        currentCustomer.accounts = currentCustomer.accounts ? [...currentCustomer.accounts, account] : [account];
         return [...customersWithoutCurrent, currentCustomer]
     } 
     if (action === 'delete') {

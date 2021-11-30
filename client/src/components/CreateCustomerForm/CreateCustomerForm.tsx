@@ -4,8 +4,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import { CustomerApi } from '../../api/customerApi';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { actions } from '../../store/actions';
+import { STORE, TEmployer } from '../../types/types';
+import { Dispatch } from 'redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,12 +25,15 @@ const useStyles = makeStyles((theme: Theme) =>
   }
 );
 
+type PropsFromRedux = {
+  dispatch: Dispatch;
+  employers: Array<TEmployer>;
+}
 
-
-const ValidationTextFields = () => {
+const CreateCustomerForm = (props: PropsFromRedux) => {
+  const { dispatch } = props;
 
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const initialCustomerFields = {
     name: '',
@@ -79,7 +84,9 @@ const ValidationTextFields = () => {
           type='number'
           onChange={(e) => onFieldChange('age', e.target.value)}
           value={customer.age}
+          required={true}
         />
+
       </div>
 
       <Button
@@ -94,4 +101,10 @@ const ValidationTextFields = () => {
   );
 }
 
-export default ValidationTextFields;
+const mapStateToProps = (state: STORE) => {
+  return {
+    employers: state.employers
+  }
+}
+
+export default connect(mapStateToProps)(CreateCustomerForm);

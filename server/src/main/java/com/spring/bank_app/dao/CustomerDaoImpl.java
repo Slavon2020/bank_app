@@ -4,30 +4,30 @@ import com.spring.bank_app.dto.CustomerDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
+@Transactional
 public class CustomerDaoImpl implements Dao<Customer> {
-    private List<Customer> customers;
-    private static long id = 1;
+    private final EntityManager em;
 
-    CustomerDaoImpl() {
-        this.customers = new ArrayList<>();
+    CustomerDaoImpl(EntityManager em) {
+        this.em = em;
     }
 
     @Override
     public Customer save(Customer customer) {
-        customer.setId(id++);
-        this.customers.add(customer);
+        em.persist(customer);
         return customer;
     }
 
     @Override
     public boolean delete(Customer customer) {
-        if (this.customers.contains(customer)) {
-            this.customers.remove(customer);
+        if (em.contains(customer)) {
+            em.remove(customer);
             return true;
         }
         return false;
@@ -35,43 +35,43 @@ public class CustomerDaoImpl implements Dao<Customer> {
 
     @Override
     public void deleteAll(List<Customer> customers) {
-        this.customers.stream().filter((customer -> !customers.contains(customer)));
+        customers.forEach(this::delete);
     }
 
     @Override
     public void saveAll(List<Customer> customers) {
-        customers.forEach((customer) -> save(customer));
+        customers.forEach(this::save);
     }
 
     @Override
     public List<Customer> findAll() {
-        return this.customers;
+        return em.createQuery("select c from Customer c", Customer.class).getResultList();
     }
 
     @Override
     public boolean deleteById(long id) {
-        if (this.customers.size() >= id) {
-            this.customers.remove((int)id);
-            return true;
-        }
-        return false;
+        int isDeleted = em.createQuery("delete from Customer c where c.id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        return isDeleted == 1;
     }
 
     @Override
     public Customer getOne(long id) {
-        Customer toReturn = null;
-        for (Customer customer : this.customers) {
-            if (customer.getId() == id) {
-                toReturn = customer;
-            }
-        }
-        return toReturn;
+         Optional<Customer> customer = Optional.ofNullable(
+                 em.createQuery(
+                 "SELECT c FROM Customer c WHERE c.id =:id", Customer.class)
+                .setParameter("id", id)
+                .getSingleResult()
+        );
+        return customer.orElseThrow();
     }
 
     public Customer update(CustomerDto customerDto) {
-        Customer customer = getOne(customerDto.getId());
-        customer.setName(customerDto.getName());
+        Customer customer = em.find(Customer.class, customerDto.getId());
         customer.setEmail(customerDto.getEmail());
+        customer.setName(customerDto.getName());
+        em.merge(customer);
         return customer;
     }
 }

@@ -40,7 +40,8 @@ public class CustomerController {
     }
 
     @DeleteMapping
-    public Map<String, Boolean> deleteCustomer(@RequestParam(value = "id") Long id) {
+    public Map<String, Boolean> delete(@RequestParam(value = "id") Long id) {
+
         if (this.customerService.deleteCustomer(id)) {
             return Collections.singletonMap("deleted", true);
         }

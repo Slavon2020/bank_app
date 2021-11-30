@@ -170,7 +170,7 @@ const Account = (props: Props) => {
 
   const updateBalance = () => {
     AccountAPI.updateAccount({
-      number,
+      id: account.id as number,
       balance: newBalance
     }).then(account => {
       dispatch(actions.updateAccount({ account, customerId: id}));
