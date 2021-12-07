@@ -1,19 +1,20 @@
 package com.spring.bank_app.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.springframework.data.repository.cdi.Eager;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@Table(name = "customers")
+@Table(name = "Customer")
 public class Customer extends AbstractModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +23,10 @@ public class Customer extends AbstractModel {
     private String email;
     private Integer age;
 
-    @ManyToMany(mappedBy = "customer")
-    private List<Employer> employer;
+    @ManyToMany(mappedBy = "customers")
+    private Set<Employer> employers;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "customer_id")
     private List<Account> accounts;
 
@@ -35,11 +36,4 @@ public class Customer extends AbstractModel {
         this.age = age;
         this.accounts = new ArrayList<>();
     }
-//
-//    public void addAccount(Account account) {
-//        this.accounts.add(account);
-//    }
-//    public void deleteAccount(Account account) {
-//        this.accounts.remove(account);
-//    }
 }

@@ -8,9 +8,10 @@ export const updateCustomers = (customers: Array<TCustomer>, updatedCustomerData
 };
 
 export const updateCustomersAccounts = (customers: Array<TCustomer>, account: TAccount, customerId: number, action: string): Array<TCustomer> => {
-    const currentCustomer = customers.find(customer => customer.id === customerId);
+    let currentCustomer = customers.find(customer => customer.id === customerId);
     if (!currentCustomer) return customers;
-    const customersWithoutCurrent = customers.filter(customer => customer.id !== currentCustomer.id);
+    currentCustomer = {...currentCustomer};
+    const customersWithoutCurrent = customers.filter(customer => customer.id !== currentCustomer!.id);
 
     if (action === 'add') {
         currentCustomer.accounts = currentCustomer.accounts ? [...currentCustomer.accounts, account] : [account];

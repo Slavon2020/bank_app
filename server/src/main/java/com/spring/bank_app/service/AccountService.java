@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AccountService {
@@ -41,9 +42,9 @@ public class AccountService {
         return accountDao.updateAccountBalance(id, newBalance);
     }
 
-    public void deleteAccount(String number) {
+    public boolean deleteAccount(String number) {
         Account accountToDelete = accountDao.getAccountByNumber(number);
-        accountDao.delete(accountToDelete);
+        return accountDao.delete(accountToDelete);
     }
 
     @Transactional

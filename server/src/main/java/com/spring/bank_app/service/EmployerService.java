@@ -21,4 +21,12 @@ public class EmployerService {
     public List<Employer> getEmployers() {
         return employerDao.getEmployers();
     }
+
+    public boolean deleteEmployer(Long id) {
+        return employerDao.deleteById(id);
+    }
+
+    public Employer update(Employer employer) {
+        return employerDao.update(employer);
+    }
 }

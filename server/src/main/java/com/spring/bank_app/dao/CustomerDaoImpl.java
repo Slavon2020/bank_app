@@ -1,6 +1,7 @@
 package com.spring.bank_app.dao;
 
 import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Repository;
@@ -73,5 +74,14 @@ public class CustomerDaoImpl implements Dao<Customer> {
         customer.setName(customerDto.getName());
         em.merge(customer);
         return customer;
+    }
+
+    public void addCustomerEmployer(CustomerEmployerDto customerEmployerDto) {
+        Long customerId = customerEmployerDto.getCustomerId();
+        Long employerId = customerEmployerDto.getEmployerId();
+        em.createNativeQuery("INSERT into employer_customer(employer_id, customer_id) VALUES(?, ?)")
+                .setParameter(1, employerId)
+                .setParameter(2, customerId)
+                .executeUpdate();
     }
 }

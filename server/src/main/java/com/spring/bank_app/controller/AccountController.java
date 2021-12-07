@@ -7,10 +7,12 @@ import com.spring.bank_app.model.Account;
 import com.spring.bank_app.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/v1/accounts")
 public class AccountController {
     private final AccountService accountService;
 
@@ -30,7 +32,6 @@ public class AccountController {
 
     @PutMapping
     public Account updateAccount(@RequestBody UpdateAccountDto updateAccountDto) {
-        System.out.println(updateAccountDto);
      return accountService.updateAccount(updateAccountDto);
     }
 
@@ -40,7 +41,10 @@ public class AccountController {
     }
 
     @DeleteMapping
-    public void deleteAccount(@RequestParam(value = "number") String number) {
-        accountService.deleteAccount(number);
-    }
+    public Map<String, Boolean> deleteAccount(@RequestParam(value = "number") String number) {
+        if (accountService.deleteAccount(number)) {
+            return Collections.singletonMap("deleted", true);
+        }
+        return Collections.singletonMap("deleted", false);
+    };
 }

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Button, makeStyles, MenuItem, Modal, Select, TableCell, TableRow, TextField } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
@@ -75,7 +75,6 @@ type Props = {
 };
 
 const Account = (props: Props) => {
-
   const { index, account, customer } = props;
   const dispatch = useDispatch();
   const { number, balance, currency } = account;
@@ -90,23 +89,23 @@ const Account = (props: Props) => {
   });
   const classes = useStyles();
 
-  const onNewBalanceChange = (e: any) => {
+  const onNewBalanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    if (value >= 0) {
-      setNewBalance(value);
+    if (+value >= 0) {
+      setNewBalance(+value);
     }
   }
 
-  const onTransferSumChange = (e: any) => {
+  const onTransferSumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (transferAccountTo.number === '') return;
-    const { value } = e.target;
-
+    
+    const value = +e.target.value;
     if (value >= 0 && value <= balance) {
       setTransferSum(value);
     }
   }
 
-  const onTransferAccChange = (e: any) => {
+  const onTransferAccChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     const accNumber = e.target.value;
     const choosedAccTransferTo = accounts.find(acc => acc.number === accNumber);
     choosedAccTransferTo && setTransferAccountTo(choosedAccTransferTo);
@@ -124,7 +123,7 @@ const Account = (props: Props) => {
   }
 
   const transferMoney = () => {
-    AccountAPI.transferMoney({
+    AccountAPI.transfer({
       accNumberFrom: number,
       sumAccFrom: transferSum,
       accNumberTo: transferAccountTo.number,
@@ -158,18 +157,20 @@ const Account = (props: Props) => {
   }
 
   const deleteAccount = () => {
-      AccountAPI.deleteAccount({
+      AccountAPI.delete({
           number
-      }).then(_res => {
+      }).then(res => {
+        if (res.deleted) {
           dispatch(actions.deleteAccount({
             customerId: id,
             account
           }))
+        }
       })
     }
 
   const updateBalance = () => {
-    AccountAPI.updateAccount({
+    AccountAPI.update({
       id: account.id as number,
       balance: newBalance
     }).then(account => {

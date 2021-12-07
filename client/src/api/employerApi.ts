@@ -1,7 +1,14 @@
 import axios from "axios";
-import { CreateEmployerData } from "../types/types";
+import { CreateEmployerData, TEmployer } from "../types/types";
 
 export default class EmployerApi {
-    static createEmployer = (data: CreateEmployerData) => axios.post('/employers', data).then(res => res.data);
-    static getEmployers = () => axios.get('employers').then(res => res.data);
+    static create = (data: CreateEmployerData) => axios.post('/api/v1/employers', data).then(res => res.data);
+    static update = (data: TEmployer) => axios.put('/api/v1/employers', data).then(res => res.data);
+    static delete = (id: number) => 
+        axios.delete('/api/v1/employers', {
+            params: {
+                id
+            }
+        }).then(res => res.data);
+    static getEmployers = () => axios.get('/api/v1/employers').then(res => res.data);
 }

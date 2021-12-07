@@ -43,9 +43,9 @@ const CreateCustomerForm = (props: PropsFromRedux) => {
 
   const [ customer, setCustomer ] = useState(initialCustomerFields);
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.SyntheticEvent) => {
       e.preventDefault();
-      CustomerApi.createCustomer(customer).then((newCustomer) => {
+      CustomerApi.create(customer).then((newCustomer) => {
         dispatch(actions.addCustomer(newCustomer));
       })
       setCustomer(initialCustomerFields);

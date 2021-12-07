@@ -1,7 +1,6 @@
 package com.spring.bank_app.dao;
 
 import com.spring.bank_app.interfaces.Dao;
-import com.spring.bank_app.model.Customer;
 import com.spring.bank_app.model.Employer;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
@@ -69,5 +68,13 @@ public class EmployerDaoImpl implements Dao<Employer> {
 
     public List<Employer> getEmployers() {
         return em.createQuery("select e from Employer e", Employer.class).getResultList();
+    }
+
+    public Employer update(Employer employer) {
+        Employer emp = em.find(Employer.class, employer.getId());
+        emp.setName(employer.getName());
+        emp.setAddress(employer.getAddress());
+        em.merge(emp);
+        return emp;
     }
 }

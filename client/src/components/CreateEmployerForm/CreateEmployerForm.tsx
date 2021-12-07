@@ -32,9 +32,9 @@ const CreateEmployerForm = () => {
     const [employer, setEmployer] = useState(initialEmployer);
     const dispatch = useDispatch();
     
-    const onSubmit = (e: any) => {
+    const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        EmployerApi.createEmployer(employer).then(res => {
+        EmployerApi.create(employer).then(res => {
             dispatch(actions.saveEmployer(res));
         });
         setEmployer(initialEmployer);

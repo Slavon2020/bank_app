@@ -1,6 +1,5 @@
 import { compose } from "redux";
 
- 
 export type STORE = {
     customers: Array<TCustomer>;
     employers: Array<TEmployer>;
@@ -12,6 +11,7 @@ export type TCustomer = {
     email: string;
     age: number;
     accounts: Array<TAccount>;
+    employers: Array<TEmployer>;
 }
 
 export type TAccount = {
@@ -20,6 +20,12 @@ export type TAccount = {
     currency: Currency;
     balance: number;
     customer?: TCustomer;
+}
+
+export type TEmployer = {
+    id: number;
+    name: string;
+    address: string;
 }
 
 export type UpdateAccountData = {
@@ -38,7 +44,8 @@ export type CreateCustomerData = {
 export type UpdateCustomerData = {
     id: number;
     name: string;
-    email: string
+    email: string,
+    employer?: TEmployer;
 }
 
 export type CreateAccountData = {
@@ -51,17 +58,22 @@ export type CreateEmployerData = {
     address: string;
 }
 
-export type TEmployer = {
-    id: number;
-    name: string;
-    address: string;
-}
+
 
 export type TransferMoneyData = {
     accNumberFrom: string;
     sumAccFrom: number;
     accNumberTo: string;
     sumAccTo: number;
+}
+
+export type AddCustomerEmployerData = {
+    customerId: number;
+    employerId: number;
+}
+
+export type Obj = {
+    [key: string]: any
 }
 
 declare global {

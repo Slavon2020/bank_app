@@ -10,7 +10,9 @@ export const actions = {
     deleteAccount,
     updateAccount,
     setEmployers,
-    saveEmployer
+    saveEmployer,
+    deleteEmployer,
+    addCustomerToEmployer
 };
 
 function setCustomers(value: Array<TCustomer>) {
@@ -73,5 +75,19 @@ function setEmployers(value: Array<TEmployer>) {
     return {
         type: constants.SET_EMPLOYERS,
         payload: value
+    }
+}
+
+function deleteEmployer(id: number) {
+    return {
+        type: constants.DELETE_EMPLOYER,
+        payload: id
+    }
+}
+
+function addCustomerToEmployer(value: {employerId: number, customerId: number}) {
+    return {
+        type: constants.ADD_CUSTOMER_TO_EMPLOYER,
+
     }
 }
