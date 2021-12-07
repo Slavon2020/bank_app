@@ -8,6 +8,7 @@ import { theme } from './styles';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.render(
       <CssBaseline />
       <Provider store={store}>
         <ErrorBoundary>
-          <App />
+          <BrowserRouter>
+            <App />
+          </ BrowserRouter>
         </ErrorBoundary>
       </Provider>
     </ThemeProvider>

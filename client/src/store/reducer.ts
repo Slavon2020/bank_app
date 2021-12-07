@@ -1,13 +1,14 @@
-import { STORE } from "../types/types";
+import { Obj, STORE } from "../types/types";
 import { updateCustomers, updateCustomersAccounts } from "../utils/utilFunctions";
 import { constants } from "./constants";
 
 const initialStore: STORE = {
-	customers: []
+	customers: [],
+	employers: []
 }
 
 // TODO type ANY
-export const reducer = (state = initialStore, action: any) => {
+export const reducer = (state = initialStore, action: Obj) => {
 	const { type, payload } = action;
 	
 	switch (type) {
@@ -43,6 +44,15 @@ export const reducer = (state = initialStore, action: any) => {
 				...state,
 				customers: customersWithUpdatedAcc
 			}
+
+		case constants.SET_EMPLOYERS:
+			return {...state, employers: payload}
+
+		case constants.SAVE_EMPLOYER:
+			return {...state, employers: [...state.employers, payload]}
+
+		case constants.DELETE_EMPLOYER:
+			return {...state, employers: state.employers.filter(e => e.id !== payload)}
 		
 		default:
 			return state;

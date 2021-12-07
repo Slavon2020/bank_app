@@ -1,6 +1,7 @@
 package com.spring.bank_app.controller;
 
 import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.model.Customer;
 import com.spring.bank_app.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/v1/customers")
 public class CustomerController {
     private final CustomerService customerService;
     private Long id;
@@ -40,26 +41,16 @@ public class CustomerController {
     }
 
     @DeleteMapping
-    public Map<String, Boolean> deleteCustomer(@RequestParam(value = "id") Long id) {
+    public Map<String, Boolean> delete(@RequestParam(value = "id") Long id) {
+
         if (this.customerService.deleteCustomer(id)) {
             return Collections.singletonMap("deleted", true);
         }
         return Collections.singletonMap("deleted", false);
     }
-    public void createCustomerAccount(Customer customer) {}
-    public void deleteCustomerAccount(Customer customer) {}
+
+    @PutMapping("/employers")
+    public void addCustomerEmployer(@RequestBody CustomerEmployerDto customerEmployerDto) {
+        customerService.addCustomerEmployer(customerEmployerDto);
+    }
 }
-
-
-
-
-
-
-
-//    Получить информацию про отдельного пользователя включая его счета
-//    Получить информацию про всех пользователей
-//        Создать пользователя
-//        Изменить данные пользователя
-//        Удалить пользователя
-//        Создать счет для конкретного пользователя
-//        Удалить счет у пользователя

@@ -1,2 +1,33 @@
 server:
   port : 9000
+
+spring:
+  profiles:
+    active: local
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://ec2-54-228-95-1.eu-west-1.compute.amazonaws.com:5432/d2n3h3dko8qn5q
+    username: whiqljkapyouoi
+    password: 62384cc9c62bae3de74fd7731c711d35ac91fd92711529c1761019036ec441ac
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  h2:
+    console:
+      enabled: true
+  jpa:
+    show-sql: true

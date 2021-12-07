@@ -1,4 +1,4 @@
-import { TAccount, TCustomer } from "../types/types";
+import { TAccount, TCustomer, TEmployer } from "../types/types";
 import { constants } from "./constants";
 
 export const actions = {
@@ -8,7 +8,11 @@ export const actions = {
     deleteCustomer,
     addAccount,
     deleteAccount,
-    updateAccount
+    updateAccount,
+    setEmployers,
+    saveEmployer,
+    deleteEmployer,
+    addCustomerToEmployer
 };
 
 function setCustomers(value: Array<TCustomer>) {
@@ -57,5 +61,33 @@ function updateAccount(value: {account: TAccount, customerId: number} ) {
     return {
         type: constants.UPDATE_ACCOUNT,
         payload: value
+    }
+}
+
+function saveEmployer(value: TEmployer ) {
+    return {
+        type: constants.SAVE_EMPLOYER,
+        payload: value
+    }
+}
+
+function setEmployers(value: Array<TEmployer>) {
+    return {
+        type: constants.SET_EMPLOYERS,
+        payload: value
+    }
+}
+
+function deleteEmployer(id: number) {
+    return {
+        type: constants.DELETE_EMPLOYER,
+        payload: id
+    }
+}
+
+function addCustomerToEmployer(value: {employerId: number, customerId: number}) {
+    return {
+        type: constants.ADD_CUSTOMER_TO_EMPLOYER,
+
     }
 }

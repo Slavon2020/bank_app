@@ -16,7 +16,7 @@ type PropsFromRedux = {
   customers: Array<TCustomer>
 }
 
-const CollapsibleTable = (props: PropsFromRedux) => {
+const CustomersTable = (props: PropsFromRedux) => {
   const { customers } = props;
 
   return (
@@ -52,4 +52,4 @@ const mapStateToProps = (store: STORE) => {
   }
 }
 
-export default connect(mapStateToProps)(CollapsibleTable);
+export default connect(mapStateToProps)(CustomersTable);

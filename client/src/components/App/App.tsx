@@ -1,9 +1,12 @@
-import Main from '../Main/Main';
+import AppRoutes from '../../routes/AppRoutes';
+import Header from '../Header/Header';
+
 
 const App = () => {
   return (
     <div className="App">
-     <Main />
+      <Header />
+      <AppRoutes />
     </div>
   );
 }

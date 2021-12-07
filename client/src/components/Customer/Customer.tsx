@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { Dispatch } from "redux";
 
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -16,7 +17,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
 import { InputLabel, MenuItem, Modal, Select, TextField } from '@material-ui/core';
 
-import { Currency, TCustomer } from '../../types/types';
+import { Currency, STORE, TCustomer, TEmployer } from '../../types/types';
 import { CustomerApi } from '../../api/customerApi';
 import { actions } from '../../store/actions';
 import AccountAPI from '../../api/accountApi';
@@ -54,8 +55,19 @@ const useRowStyles = makeStyles({
   btn: {
     marginRight: theme.spacing(2)
   },
+  info: {
+    width: '80%',
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  employersInfo: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '80%'
+  },
   customerField: {
-    marginRight: theme.spacing(2)
+    width: '30%',
   }
 });
 
@@ -63,13 +75,18 @@ type Props = {
     customer: TCustomer;
 };
 
-export default function Customer (props: Props) {
-  const { customer } = props;
+type PropsFromRedux = {
+  dispatch: Dispatch;
+  employers: Array<TEmployer>
+}
+
+const Customer = (props: Props & PropsFromRedux) => {
+  const { customer, employers, dispatch } = props;
   const { name, age, email, accounts, id } = customer;
   const [showEditCustomerModal, setSHowEditCustomerModal] = useState(false);
   const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
   const [currency, setCurrency] = useState('UAH');
-  const dispatch = useDispatch();
+  const [selectedEmployer, setSelectedEmployer] = useState('');
   const [localCustomerInfo, setLocalCustomerInfo] = useState({
     name,
     email
@@ -87,7 +104,7 @@ export default function Customer (props: Props) {
   };
 
   const createAccount = () => {
-    AccountAPI.createAccount({
+    AccountAPI.create({
       customerId: id,
       currency: currency as Currency
     }).then(res => {
@@ -104,7 +121,7 @@ export default function Customer (props: Props) {
   };
 
   const updateCustomer = () => {
-    CustomerApi.updateCustomer({
+    CustomerApi.update({
       id,
       name: localCustomerInfo.name,
       email: localCustomerInfo.email
@@ -116,9 +133,9 @@ export default function Customer (props: Props) {
   const createAccountBody = () => (
     <div className={classes.editFieldsWrap}>
       <div className={classes.createAccBlock}>
-        <InputLabel id="demo-simple-select-label">Currency</InputLabel>
+        <InputLabel id="currency">Currency</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
+          labelId="currency"
           id="demo-simple-select"
           value={currency}
           onChange={(e) => setCurrency(e.target.value as string)}
@@ -147,10 +164,48 @@ export default function Customer (props: Props) {
       </Button>
     </div>
   );
+
+  const getCustomerEmployers = () => {
+    return customer.employers && customer.employers.map(employer => {
+      const { name } = employer;
+      return (
+        <Typography>{name}</Typography>
+      )
+    })
+  }
+
+  const getAvailableEmployers = () => {
+    return employers.map(employer => {
+      const {name, address } = employer;
+      return (
+        <MenuItem value={name}>{name + ", " + address}</MenuItem>
+      )
+    })
+  }
+
+  const handleEmployerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedEmployer(e.target.value);
+  }
+
+  const addCustomerEmployer = () => {
+    const currentEmployer = getEmployer(selectedEmployer);
+    if (id) {
+      CustomerApi.addEmployer({
+        customerId: customer.id,
+        employerId: currentEmployer!.id
+      }).then(_res => {
+        const updatedCustomer = {...customer};
+        updatedCustomer.employers.push(currentEmployer!)
+        dispatch(actions.updateCustomer(updatedCustomer))
+      })
+    }
+  }
+
+  const getEmployer = (name: string) => employers.find(employer => employer.name === name);
   
   const editCustomerBody = () => (
     <div className={classes.editFieldsWrap}>
-      <div>
+      <div className={classes.info}>
         <TextField
         className={classes.customerField}
           label='name:'
@@ -160,13 +215,12 @@ export default function Customer (props: Props) {
         />
 
         <TextField
+          className={classes.customerField}
           label='email:'
           type="text"
           value={localCustomerInfo.email}
           onChange={(e) => onInputChange('email', e.target.value)} 
         />
-      </div>
-      <div>
         <Button
           className={classes.btn}
           variant="contained"
@@ -176,7 +230,32 @@ export default function Customer (props: Props) {
         >
           Update
         </Button>
-
+      </div>
+      <div className={classes.employersInfo}>
+        <TextField
+          className={classes.customerField}
+          id="select" 
+          label="add employer:" 
+          value={selectedEmployer}
+          onChange={handleEmployerChange}
+          select>
+          {getAvailableEmployers()}
+        </TextField>
+        <Button
+          className={classes.btn}
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={addCustomerEmployer}
+        >
+          Add employer
+        </Button>
+        <div>
+          <Typography>Customer employers:</Typography>
+          {getCustomerEmployers()}
+        </div>
+      </div>
+      <div>
         <Button
           className={classes.btn}
           variant="contained"
@@ -191,8 +270,11 @@ export default function Customer (props: Props) {
   );
 
   const deleteCustomer = () => {
-    CustomerApi.deleteCustomer(id).then(res => {
-      dispatch(actions.deleteCustomer(id));
+    CustomerApi.delete(id).then(res => {
+
+     if (res.deleted) {
+        dispatch(actions.deleteCustomer(id));
+     }
     })
   }
 
@@ -293,3 +375,11 @@ export default function Customer (props: Props) {
     </React.Fragment>
   );
 }
+
+const mapStateToProps = (state: STORE) => {
+  return {
+    employers: state.employers
+  }
+}
+
+export default connect(mapStateToProps)(Customer);

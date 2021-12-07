@@ -1,82 +1,86 @@
 package com.spring.bank_app.dao;
 
-import com.spring.bank_app.dto.AccountDto.UpdateAccountDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Account;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
+@Transactional
 public class AccountDaoImpl implements Dao<Account> {
+    private final EntityManager em;
 
-    private List<Account> accounts;
-    private static Long id = 1l;
-
-    AccountDaoImpl() {
-        this.accounts = new ArrayList<>();
+    public AccountDaoImpl(EntityManager entityManager) {
+        this.em = entityManager;
     }
 
     @Override
     public Account save(Account account) {
-        account.setId(id++);
-        this.accounts.add(account);
+        em.persist(account);
         return account;
     }
 
     @Override
     public boolean delete(Account account) {
-        if (this.accounts.contains(account)) {
-            this.accounts.remove(account);
-            return true;
-        }
-        return false;
+        long id = account.getId();
+        int isDeleted = em.createQuery("delete from Account a where a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        return isDeleted == 1;
     }
 
     @Override
     public void deleteAll(List<Account> accounts) {
-        this.accounts.stream().filter((account -> !accounts.contains(account)));
+        accounts.forEach(this::delete);
     }
 
     @Override
     public void saveAll(List<Account> accounts) {
-        accounts.forEach((ac) -> save(ac));
+        accounts.forEach(this::save);
     }
 
     @Override
     public List<Account> findAll() {
-        return this.accounts;
+        return em.createQuery("select a from Account a", Account.class).getResultList();
     }
 
     @Override
     public boolean deleteById(long id) {
-        if (this.accounts.size() >= id) {
-            this.accounts.remove((int)id);
-            return true;
-        }
-        return false;
+        int isDeleted = em.createQuery("delete from Account a where a.id=:id")
+                .setParameter("id", id)
+                .executeUpdate();
+        return isDeleted == 1;
     }
 
     @Override
     public Account getOne(long id) {
-        return this.accounts.get((int)(id + 1));
+        Optional<Account> account = Optional.ofNullable(
+                em.createQuery(
+                        "SELECT a FROM Account a WHERE a.id =:id", Account.class)
+                        .setParameter("id", id)
+                        .getSingleResult()
+        );
+        return account.orElseThrow();
     }
 
     public Account getAccountByNumber(String number) {
-        Account toReturn = null;
-        for (Account account : this.accounts) {
-            if (account.getNumber().equals(number)) {
-                toReturn = account;
-            }
-        }
-        return toReturn;
+        Optional<Account> account = Optional.ofNullable(
+                em.createQuery(
+                                "SELECT a FROM Account a WHERE a.number =:number", Account.class)
+                        .setParameter("number", number)
+                        .getSingleResult()
+        );
+        return account.orElseThrow();
     }
 
-    public Account updateAccount(String accNumber, Double newBalance) {
-        Account currentAcc = getAccountByNumber(accNumber);
-        currentAcc.setBalance(newBalance);
-        return currentAcc;
+    public Account updateAccountBalance(Long id, Double newBalance) {
+        Account account = em.find(Account.class, id);
+        account.setBalance(newBalance);
+        em.merge(account);
+        return account;
     }
 
     public void increaseBalance(String accNumber, Double diff) {

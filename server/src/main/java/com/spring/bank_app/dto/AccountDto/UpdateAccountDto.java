@@ -2,7 +2,7 @@ package com.spring.bank_app.dto.AccountDto;
 
 public class UpdateAccountDto {
     private Double balance;
-    private String number;
+    private Long id;
 
     public Double getBalance() {
         return balance;
@@ -12,11 +12,11 @@ public class UpdateAccountDto {
         this.balance = balance;
     }
 
-    public String getNumber() {
-        return number;
+    public Long getId() {
+        return id;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

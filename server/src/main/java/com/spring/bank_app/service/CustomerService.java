@@ -2,6 +2,7 @@ package com.spring.bank_app.service;
 
 import com.spring.bank_app.dao.CustomerDaoImpl;
 import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.model.Currency;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
@@ -33,20 +34,18 @@ public class CustomerService {
         return customerDaoImpl.update(customerDto);
     }
 
-    public boolean deleteCustomer(Long id) {
-        boolean isDeleted = false;
-        Customer customerToDelete = this.customerDaoImpl.getOne(id);
-        if (customerToDelete != null) {
-            this.customerDaoImpl.delete(customerToDelete);
-            isDeleted = true;
-        }
-        return isDeleted;
+    public boolean deleteCustomer(long id) {
+        return customerDaoImpl.deleteById(id);
     }
 
-    public void createCustomerAccount(Customer customer, Currency currency) {
-        System.out.println("create account");
-        System.out.println("customer --- " + customer);
-        System.out.println("currency --- " + currency);
+    public boolean deleteCustomer(Customer customer) {
+
+        return customerDaoImpl.delete(customer);
     }
+
     public void deleteCustomerAccount(Customer customer) {}
+
+    public void addCustomerEmployer(CustomerEmployerDto customerEmployerDto) {
+       customerDaoImpl.addCustomerEmployer(customerEmployerDto);
+    }
 }
