@@ -264,7 +264,6 @@ const Account = (props: Props) => {
 
   return (
     <Fragment>
-
       <TableRow key={number}>
         <TableCell component="th" scope="row">
           {index + 1}
@@ -290,9 +289,7 @@ const Account = (props: Props) => {
         {editAccountBody()}
       </Modal>
     </Fragment>
-      
   )
 }
-
 
 export default Account;
