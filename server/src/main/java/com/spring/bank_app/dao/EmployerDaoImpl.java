@@ -56,7 +56,7 @@ public class EmployerDaoImpl implements Dao<Employer> {
     }
 
     @Override
-    public Employer getOne(long id) {
+    public Employer getById(long id) {
         Optional<Employer> employer = Optional.ofNullable(
                 em.createQuery(
                                 "SELECT e FROM Employer e WHERE e.id =:id", Employer.class)

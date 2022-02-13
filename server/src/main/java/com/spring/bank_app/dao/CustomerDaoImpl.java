@@ -1,6 +1,6 @@
 package com.spring.bank_app.dao;
 
-import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerDto.CustomerDto;
 import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Customer;
@@ -29,6 +29,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
     public boolean delete(Customer customer) {
         if (em.contains(customer)) {
             em.remove(customer);
+            em.close();
             return true;
         }
         return false;
@@ -58,8 +59,8 @@ public class CustomerDaoImpl implements Dao<Customer> {
     }
 
     @Override
-    public Customer getOne(long id) {
-         Optional<Customer> customer = Optional.ofNullable(
+    public Customer getById(long id) {
+        Optional<Customer> customer = Optional.ofNullable(
                  em.createQuery(
                  "SELECT c FROM Customer c WHERE c.id =:id", Customer.class)
                 .setParameter("id", id)
@@ -76,7 +77,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
         return customer;
     }
 
-    public void addCustomerEmployer(CustomerEmployerDto customerEmployerDto) {
+    public void addEmployer(CustomerEmployerDto customerEmployerDto) {
         Long customerId = customerEmployerDto.getCustomerId();
         Long employerId = customerEmployerDto.getEmployerId();
         em.createNativeQuery("INSERT into employer_customer(employer_id, customer_id) VALUES(?, ?)")

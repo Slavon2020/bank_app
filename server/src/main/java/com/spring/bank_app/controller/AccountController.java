@@ -26,13 +26,13 @@ public class AccountController {
     }
 
     @GetMapping
-    public List<Account> getAllAccounts() {
-        return accountService.getAllAccounts();
+    public List<Account> getAll() {
+        return accountService.getAll();
     }
 
     @PutMapping
-    public Account updateAccount(@RequestBody UpdateAccountDto updateAccountDto) {
-     return accountService.updateAccount(updateAccountDto);
+    public Account update(@RequestBody UpdateAccountDto updateAccountDto) {
+     return accountService.update(updateAccountDto);
     }
 
     @PutMapping("/transfer")
@@ -41,8 +41,8 @@ public class AccountController {
     }
 
     @DeleteMapping
-    public Map<String, Boolean> deleteAccount(@RequestParam(value = "number") String number) {
-        if (accountService.deleteAccount(number)) {
+    public Map<String, Boolean> delete(@RequestParam(value = "number") String number) {
+        if (accountService.delete(number)) {
             return Collections.singletonMap("deleted", true);
         }
         return Collections.singletonMap("deleted", false);

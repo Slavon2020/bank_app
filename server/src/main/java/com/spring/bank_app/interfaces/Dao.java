@@ -9,5 +9,5 @@ public interface Dao <T> {
     void saveAll(List<T> entities);
     List<T> findAll();
     boolean deleteById(long id);
-    T getOne(long id);
+    T getById(long id);
 }

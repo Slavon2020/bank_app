@@ -1,5 +1,6 @@
 package com.spring.bank_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,9 @@ public class Customer extends AbstractModel {
     private String name;
     private String email;
     private Integer age;
+    @JsonIgnore
+    private String password;
+    private Integer phoneNumber;
 
     @ManyToMany(mappedBy = "customers")
     private Set<Employer> employers;

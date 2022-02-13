@@ -11,8 +11,8 @@ import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AccountService {
@@ -27,38 +27,42 @@ public class AccountService {
     public Account save(AccountDto accountDto) {
         Long customerId = accountDto.getCustomerId();
         Currency currency = accountDto.getCurrency();
-        Customer customer = customerDao.getOne(customerId);
+        Customer customer = customerDao.getById(customerId);
         Account newAccount = accountDao.save(new Account(customer, currency));
         return newAccount;
     }
 
-    public List<Account> getAllAccounts() {
+    public List<Account> getAll() {
         return accountDao.findAll();
     }
 
-    public Account updateAccount(UpdateAccountDto updateAccountDto) {
+    public Account update(UpdateAccountDto updateAccountDto) {
         Long id = updateAccountDto.getId();
-        Double newBalance = updateAccountDto.getBalance();
-        return accountDao.updateAccountBalance(id, newBalance);
+        BigDecimal newBalance = updateAccountDto.getBalance();
+        return accountDao.updateBalance(id, newBalance);
     }
 
-    public boolean deleteAccount(String number) {
-        Account accountToDelete = accountDao.getAccountByNumber(number);
+    public boolean delete(String number) {
+        Account accountToDelete = accountDao.getByNumber(number);
         return accountDao.delete(accountToDelete);
     }
 
     @Transactional
     public TransferMoneyDto transferMoney(TransferMoneyDto transferMoneyDto) {
-        String accNumberFrom = transferMoneyDto.getAccNumberFrom();
-        Double sumAccFrom = transferMoneyDto.getSumAccFrom();
-        boolean isOperationPassed = accountDao.decreaseBalance(accNumberFrom, sumAccFrom);
+        BigDecimal sumAccFrom = transferMoneyDto.getSumAccFrom();
 
-        String accNumberTo = transferMoneyDto.getAccNumberTo();
-        Double sumAccTo = transferMoneyDto.getSumAccTo();
-        accountDao.increaseBalance(accNumberTo, sumAccTo);
-        if (isOperationPassed) {
+        Account accFrom = accountDao.getByNumber(transferMoneyDto.getAccNumberFrom());
+        BigDecimal accFromBalance = accFrom.getBalance();
+
+        if (accFromBalance.compareTo(sumAccFrom) > 0) {
+            accFrom.setBalance(accFromBalance.subtract(sumAccFrom));
+
+            Account accTo = accountDao.getByNumber(transferMoneyDto.getAccNumberTo());
+            BigDecimal sumAccTo = transferMoneyDto.getSumAccTo();
+            accTo.setBalance(accTo.getBalance().add(sumAccTo));
             return transferMoneyDto;
         }
-        return null;
+
+        return null; // TODO: should be fixed
     }
 }

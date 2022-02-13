@@ -1,10 +1,12 @@
 package com.spring.bank_app.dto.AccountDto;
 
+import java.math.BigDecimal;
+
 public class TransferMoneyDto {
     private String accNumberFrom;
-    private Double sumAccFrom;
+    private BigDecimal sumAccFrom;
     private String accNumberTo;
-    private Double sumAccTo;
+    private BigDecimal sumAccTo;
 
     public String getAccNumberFrom() {
         return accNumberFrom;
@@ -14,11 +16,11 @@ public class TransferMoneyDto {
         this.accNumberFrom = accNumberFrom;
     }
 
-    public Double getSumAccFrom() {
+    public BigDecimal getSumAccFrom() {
         return sumAccFrom;
     }
 
-    public void setSumAccFrom(Double sumAccFrom) {
+    public void setSumAccFrom(BigDecimal sumAccFrom) {
         this.sumAccFrom = sumAccFrom;
     }
 
@@ -30,11 +32,11 @@ public class TransferMoneyDto {
         this.accNumberTo = accNumberTo;
     }
 
-    public Double getSumAccTo() {
+    public BigDecimal getSumAccTo() {
         return sumAccTo;
     }
 
-    public void setSumAccTo(Double sumAccTo) {
+    public void setSumAccTo(BigDecimal sumAccTo) {
         this.sumAccTo = sumAccTo;
     }
 }

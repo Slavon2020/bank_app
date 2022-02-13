@@ -1,7 +1,5 @@
 package com.spring.bank_app.controller;
 
-import com.spring.bank_app.dto.CustomerDto;
-import com.spring.bank_app.model.Customer;
 import com.spring.bank_app.model.Employer;
 import com.spring.bank_app.service.EmployerService;
 import org.springframework.web.bind.annotation.*;

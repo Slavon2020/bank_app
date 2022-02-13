@@ -1,14 +1,16 @@
 package com.spring.bank_app.dto.AccountDto;
 
+import java.math.BigDecimal;
+
 public class UpdateAccountDto {
-    private Double balance;
+    private BigDecimal balance;
     private Long id;
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 

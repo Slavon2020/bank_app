@@ -4,7 +4,10 @@ import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Account;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +47,8 @@ public class AccountDaoImpl implements Dao<Account> {
 
     @Override
     public List<Account> findAll() {
-        return em.createQuery("select a from Account a", Account.class).getResultList();
+        List<Account> allAccounts = em.createQuery("select a from Account a", Account.class).getResultList();
+        return allAccounts;
     }
 
     @Override
@@ -56,7 +60,7 @@ public class AccountDaoImpl implements Dao<Account> {
     }
 
     @Override
-    public Account getOne(long id) {
+    public Account getById(long id) {
         Optional<Account> account = Optional.ofNullable(
                 em.createQuery(
                         "SELECT a FROM Account a WHERE a.id =:id", Account.class)
@@ -66,7 +70,7 @@ public class AccountDaoImpl implements Dao<Account> {
         return account.orElseThrow();
     }
 
-    public Account getAccountByNumber(String number) {
+    public Account getByNumber(String number) {
         Optional<Account> account = Optional.ofNullable(
                 em.createQuery(
                                 "SELECT a FROM Account a WHERE a.number =:number", Account.class)
@@ -76,26 +80,10 @@ public class AccountDaoImpl implements Dao<Account> {
         return account.orElseThrow();
     }
 
-    public Account updateAccountBalance(Long id, Double newBalance) {
+    public Account updateBalance(Long id, BigDecimal newBalance) {
         Account account = em.find(Account.class, id);
         account.setBalance(newBalance);
         em.merge(account);
         return account;
-    }
-
-    public void increaseBalance(String accNumber, Double diff) {
-        Account account = getAccountByNumber(accNumber);
-        account.setBalance(account.getBalance() + diff);
-    }
-
-    public boolean decreaseBalance(String accNumber, Double diff) {
-        boolean isOperationPassed = false;
-        Account account = getAccountByNumber(accNumber);
-        Double currentBalance = account.getBalance();
-        if (currentBalance >= diff) {
-            account.setBalance(account.getBalance() - diff);
-            isOperationPassed = true;
-        }
-        return isOperationPassed;
     }
 }

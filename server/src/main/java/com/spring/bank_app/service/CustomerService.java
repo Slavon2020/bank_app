@@ -1,9 +1,8 @@
 package com.spring.bank_app.service;
 
 import com.spring.bank_app.dao.CustomerDaoImpl;
-import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerDto.CustomerDto;
 import com.spring.bank_app.dto.CustomerEmployerDto;
-import com.spring.bank_app.model.Currency;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerInfo(Long id) {
-        return this.customerDaoImpl.getOne(id);
+        return this.customerDaoImpl.getById(id);
     }
     public List<Customer> getAllCustomersInfo() {
         return this.customerDaoImpl.findAll();
@@ -46,6 +45,6 @@ public class CustomerService {
     public void deleteCustomerAccount(Customer customer) {}
 
     public void addCustomerEmployer(CustomerEmployerDto customerEmployerDto) {
-       customerDaoImpl.addCustomerEmployer(customerEmployerDto);
+       customerDaoImpl.addEmployer(customerEmployerDto);
     }
 }

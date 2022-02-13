@@ -2,10 +2,12 @@ package com.spring.bank_app.dto.AccountDto;
 
 import com.spring.bank_app.model.Currency;
 
+import java.math.BigDecimal;
+
 public class AccountDto {
     private Currency currency;
     private Long customerId;
-    private Long balance;
+    private BigDecimal balance;
     private String number;
 
     public String getNumber() {
@@ -32,11 +34,11 @@ public class AccountDto {
         this.customerId = customerId;
     }
 
-    public Long getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setSum(Long balance) {
+    public void setSum(BigDecimal balance) {
         this.balance = balance;
     }
 }

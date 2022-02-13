@@ -1,6 +1,6 @@
 package com.spring.bank_app.controller;
 
-import com.spring.bank_app.dto.CustomerDto;
+import com.spring.bank_app.dto.CustomerDto.CustomerDto;
 import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.model.Customer;
 import com.spring.bank_app.service.CustomerService;
@@ -21,7 +21,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public Customer getCustomerInfo(@PathVariable("id") Long id) {
+    public Customer getInfoById(@PathVariable("id") Long id) {
         this.id = id;
         return this.customerService.getCustomerInfo(id);
     }
@@ -32,11 +32,11 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer) {
+    public Customer create(@RequestBody Customer customer) {
         return this.customerService.createCustomer(customer);
     }
     @PutMapping
-    public Customer updateCustomer(@RequestBody CustomerDto customerDto) {
+    public Customer update(@RequestBody CustomerDto customerDto) {
         return customerService.updateCustomer(customerDto);
     }
 
@@ -50,7 +50,7 @@ public class CustomerController {
     }
 
     @PutMapping("/employers")
-    public void addCustomerEmployer(@RequestBody CustomerEmployerDto customerEmployerDto) {
+    public void addEmployer(@RequestBody CustomerEmployerDto customerEmployerDto) {
         customerService.addCustomerEmployer(customerEmployerDto);
     }
 }

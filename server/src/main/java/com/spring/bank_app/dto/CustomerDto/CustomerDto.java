@@ -1,4 +1,4 @@
-package com.spring.bank_app.dto;
+package com.spring.bank_app.dto.CustomerDto;
 
 public class CustomerDto {
     private String name;

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
@@ -18,7 +19,7 @@ public  class Account extends AbstractModel {
     private Long id;
     private String number;
     private Currency currency;
-    private Double balance;
+    private BigDecimal balance;
     @JsonIgnore
     @ManyToOne
     private Customer customer;
@@ -27,6 +28,6 @@ public  class Account extends AbstractModel {
         this.currency = currency;
         this.customer = customer;
         this.number = UUID.randomUUID().toString();
-        this.balance = 0.0;
+        this.balance = new BigDecimal("0");
     }
 }
