@@ -1,10 +1,9 @@
-import { useState } from "react";
-import { Button, createStyles, makeStyles, TextField, Theme } from "@material-ui/core";
+import { useState } from 'react';
+import { Button, createStyles, makeStyles, TextField, Theme } from '@material-ui/core';
 
-import { TEmployer } from "../../types/types";
-import EmployerApi from "../../api/employerApi";
-import { useDispatch } from "react-redux";
-import { actions } from "../../store/actions";
+import { TEmployer } from '../../types/types';
+import { useDispatch } from 'react-redux';
+import { removeEmployer, updateEmployer } from '../../store/operations';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,11 +37,7 @@ const Employer = (props: Props) => {
     
     const handleEditBtn = () => {
         if (isEditing) {
-            EmployerApi.update({
-                name: localEmployerData.name,
-                address: localEmployerData.address,
-                id
-            })
+            updateEmployer(localEmployerData.name, localEmployerData.address, id )
         }
         setIsEditing(prevState => !prevState);
     }
@@ -55,11 +50,7 @@ const Employer = (props: Props) => {
     }
 
     const deleteEmployer = () => {
-        EmployerApi.delete(id).then(res => {
-            if (res.deleted) {
-                dispatch(actions.deleteEmployer(id));
-            }
-        })
+        dispatch(removeEmployer(id));
     }
 
     return (

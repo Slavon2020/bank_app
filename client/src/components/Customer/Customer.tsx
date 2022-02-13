@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
+import { v4 as uuidv4 } from "uuid";
 
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -17,12 +18,10 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Button from '@material-ui/core/Button';
 import { InputLabel, MenuItem, Modal, Select, TextField } from '@material-ui/core';
 
-import { Currency, STORE, TCustomer, TEmployer } from '../../types/types';
-import { CustomerApi } from '../../api/customerApi';
-import { actions } from '../../store/actions';
-import AccountAPI from '../../api/accountApi';
+import { TCurrency, STORE, TCustomer, TEmployer } from '../../types/types';
 import { theme } from '../../styles';
 import Account from '../Account/Account';
+import { addEmployerToCustomer, customerUpdate, deleteCustomerById, saveAccount } from '../../store/operations';
 
 const useRowStyles = makeStyles({
   root: {
@@ -76,7 +75,7 @@ type Props = {
 };
 
 type PropsFromRedux = {
-  dispatch: Dispatch;
+  dispatch: Dispatch<any>;
   employers: Array<TEmployer>
 }
 
@@ -104,13 +103,8 @@ const Customer = (props: Props & PropsFromRedux) => {
   };
 
   const createAccount = () => {
-    AccountAPI.create({
-      customerId: id,
-      currency: currency as Currency
-    }).then(res => {
-      dispatch(actions.addAccount({account: res, customerId: id } ));
-      setShowCreateAccountModal(false);
-    })
+    dispatch(saveAccount(id as number, currency as TCurrency));
+    setShowCreateAccountModal(false);
   };
 
   const onInputChange = (field: string, value: string) => {
@@ -121,13 +115,7 @@ const Customer = (props: Props & PropsFromRedux) => {
   };
 
   const updateCustomer = () => {
-    CustomerApi.update({
-      id,
-      name: localCustomerInfo.name,
-      email: localCustomerInfo.email
-    }).then(updatedCustomer => {
-      dispatch(actions.updateCustomer(updatedCustomer))
-    })
+    dispatch(customerUpdate(id as number, localCustomerInfo.name, localCustomerInfo.email));
   };
 
   const createAccountBody = () => (
@@ -169,7 +157,7 @@ const Customer = (props: Props & PropsFromRedux) => {
     return customer.employers && customer.employers.map(employer => {
       const { name } = employer;
       return (
-        <Typography>{name}</Typography>
+        <Typography key={uuidv4()}>{name}</Typography>
       )
     })
   }
@@ -178,7 +166,7 @@ const Customer = (props: Props & PropsFromRedux) => {
     return employers.map(employer => {
       const {name, address } = employer;
       return (
-        <MenuItem value={name}>{name + ", " + address}</MenuItem>
+        <MenuItem key={uuidv4()} value={name}>{name + ", " + address}</MenuItem>
       )
     })
   }
@@ -190,14 +178,12 @@ const Customer = (props: Props & PropsFromRedux) => {
   const addCustomerEmployer = () => {
     const currentEmployer = getEmployer(selectedEmployer);
     if (id) {
-      CustomerApi.addEmployer({
-        customerId: customer.id,
-        employerId: currentEmployer!.id
-      }).then(_res => {
-        const updatedCustomer = {...customer};
-        updatedCustomer.employers.push(currentEmployer!)
-        dispatch(actions.updateCustomer(updatedCustomer))
-      })
+    dispatch(addEmployerToCustomer(
+          customer.id as number,
+          currentEmployer!.id,
+          customer,
+          currentEmployer!
+      ));
     }
   }
 
@@ -270,12 +256,7 @@ const Customer = (props: Props & PropsFromRedux) => {
   );
 
   const deleteCustomer = () => {
-    CustomerApi.delete(id).then(res => {
-
-     if (res.deleted) {
-        dispatch(actions.deleteCustomer(id));
-     }
-    })
+    dispatch(deleteCustomerById(id as number));
   }
 
   return (

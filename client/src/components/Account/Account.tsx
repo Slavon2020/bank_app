@@ -1,11 +1,10 @@
-import React, { Fragment, useState } from "react";
-import { Button, makeStyles, MenuItem, Modal, Select, TableCell, TableRow, TextField } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import React, { Fragment, useState } from 'react';
+import { Button, makeStyles, MenuItem, Modal, Select, TableCell, TableRow, TextField } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 
-import AccountAPI from "../../api/accountApi";
-import { Currency, TAccount, TCustomer } from "../../types/types";
-import { actions } from "../../store/actions";
-import { theme } from "../../styles";
+import { TCurrency, TAccount, TCustomer } from '../../types/types';
+import { theme } from '../../styles';
+import { removeAccount, transfer, updateAccount } from '../../store/operations';
 
 const useStyles = makeStyles({
   editFieldsWrap: {
@@ -85,7 +84,7 @@ const Account = (props: Props) => {
   const [transferAccountTo, setTransferAccountTo] = useState({
     number: '',
     balance: 0,
-    currency: '' as Currency,
+    currency: '' as TCurrency,
   });
   const classes = useStyles();
 
@@ -107,13 +106,13 @@ const Account = (props: Props) => {
 
   const onTransferAccChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     const accNumber = e.target.value;
-    const choosedAccTransferTo = accounts.find(acc => acc.number === accNumber);
+    const choosedAccTransferTo = accounts?.find(acc => acc.number === accNumber);
     choosedAccTransferTo && setTransferAccountTo(choosedAccTransferTo);
   }
 
   const getAccountsToTransfer = () => {
-    const accountsToTransfer = accounts.filter(acc => acc.number !== number);
-    return accountsToTransfer.map(acc => {
+    const accountsToTransfer = accounts?.filter(acc => acc.number !== number);
+    return accountsToTransfer?.map(acc => {
       const { number } = acc;
           const value = acc.number + ' ' + acc.balance + ' ' + acc.currency;
           return (
@@ -123,59 +122,26 @@ const Account = (props: Props) => {
   }
 
   const transferMoney = () => {
-    AccountAPI.transfer({
-      accNumberFrom: number,
-      sumAccFrom: transferSum,
-      accNumberTo: transferAccountTo.number,
-      sumAccTo: transferSum
-    }).then(res => {
-      const {accNumberFrom, sumAccFrom, accNumberTo, sumAccTo} = res;
-      dispatch(actions.updateAccount({
-        account: {
-          ...account,
-          number: accNumberFrom,
-          balance: account.balance - sumAccFrom
-        },
-        customerId: customer.id
-      }));
+    dispatch(transfer(
+        number,
+        transferSum,
+        transferAccountTo.number,
+        transferSum,
+        account,
+        customer.id as number,
+        transferAccountTo,
+        setTransferAccountTo
+    ))
 
-      dispatch(actions.updateAccount({
-        account: {
-          ...transferAccountTo,
-          number: accNumberTo,
-          balance: transferAccountTo.balance + sumAccTo
-        },
-        customerId: customer.id
-      }));
-
-      setTransferAccountTo({
-        ...transferAccountTo,
-        balance: transferAccountTo.balance + sumAccTo
-      });
-      setTransferSum(0);
-    })
+    setTransferSum(0);
   }
 
   const deleteAccount = () => {
-      AccountAPI.delete({
-          number
-      }).then(res => {
-        if (res.deleted) {
-          dispatch(actions.deleteAccount({
-            customerId: id,
-            account
-          }))
-        }
-      })
+    dispatch(removeAccount(id as number, account));
     }
 
   const updateBalance = () => {
-    AccountAPI.update({
-      id: account.id as number,
-      balance: newBalance
-    }).then(account => {
-      dispatch(actions.updateAccount({ account, customerId: id}));
-    })
+    dispatch(updateAccount(account.id as number, newBalance));
   }
   
   const editAccountBody = () => {

@@ -1,13 +1,13 @@
 import { useState } from 'react';
+import { connect } from 'react-redux';
+
 import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import { CustomerApi } from '../../api/customerApi';
-import { connect } from 'react-redux';
-import { actions } from '../../store/actions';
+
 import { STORE, TEmployer } from '../../types/types';
-import { Dispatch } from 'redux';
+import { saveCustomer } from '../../store/operations';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,13 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type PropsFromRedux = {
-  dispatch: Dispatch;
   employers: Array<TEmployer>;
 }
 
 const CreateCustomerForm = (props: PropsFromRedux) => {
-  const { dispatch } = props;
-
   const classes = useStyles();
 
   const initialCustomerFields = {
@@ -45,9 +42,7 @@ const CreateCustomerForm = (props: PropsFromRedux) => {
 
   const onSubmit = (e: React.SyntheticEvent) => {
       e.preventDefault();
-      CustomerApi.create(customer).then((newCustomer) => {
-        dispatch(actions.addCustomer(newCustomer));
-      })
+      saveCustomer(customer);
       setCustomer(initialCustomerFields);
   }
 

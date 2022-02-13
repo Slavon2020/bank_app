@@ -11,17 +11,15 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Provider store={store}>
-        <ErrorBoundary>
-          <BrowserRouter>
-            <App />
-          </ BrowserRouter>
-        </ErrorBoundary>
-      </Provider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <Provider store={store}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <App />
+        </ BrowserRouter>
+      </ErrorBoundary>
+    </Provider>
+  </ThemeProvider>,
   document.getElementById('root')
 );

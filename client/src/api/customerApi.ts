@@ -2,7 +2,7 @@ import axios from "axios";
 import { AddCustomerEmployerData, CreateCustomerData, UpdateCustomerData } from "../types/types";
 
 export class CustomerApi {
-    static getAllCustomers = () => axios.get('/api/v1/customers').then(res => res.data); 
+    static getAll = () => axios.get('/api/v1/customers').then(res => res.data);
     static create = (data: CreateCustomerData) => axios.post('/api/v1/customers', data).then(res => res.data);
     static delete = (id: number) => 
         axios.delete('/api/v1/customers', {

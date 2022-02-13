@@ -18,13 +18,13 @@ export const updateCustomersAccounts = (customers: Array<TCustomer>, account: TA
         return [...customersWithoutCurrent, currentCustomer]
     } 
     if (action === 'delete') {
-        currentCustomer.accounts = currentCustomer.accounts.filter(acc => acc.number !== account.number)
+        currentCustomer.accounts = currentCustomer?.accounts?.filter(acc => acc.number !== account.number)
         return [...customersWithoutCurrent, currentCustomer]
     }
     if (action === 'update') {
         const currentCustomerAccounts = currentCustomer.accounts;
-        const accsWithoutUpdated = currentCustomerAccounts.filter(acc => acc.number !== account.number);
-        currentCustomer.accounts = [...accsWithoutUpdated, account];
+        const accsWithoutUpdated = currentCustomerAccounts?.filter(acc => acc.number !== account.number);
+        currentCustomer.accounts = [...accsWithoutUpdated as Array<TAccount>, account];
         return [...customersWithoutCurrent, currentCustomer];
     }
     return customers;

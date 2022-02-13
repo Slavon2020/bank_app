@@ -1,24 +1,23 @@
-import { Typography } from "@material-ui/core";
-import { useEffect } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import EmployerApi from "../../api/employerApi";
-import CreateEmployerForm from "../../components/CreateEmployerForm/CreateEmployerForm"
-import EmployersList from "../../components/EmployersList/EmployersList"
-import { actions } from "../../store/actions";
-import { STORE, TEmployer } from "../../types/types";
+import { useEffect } from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+
+import { Typography } from '@material-ui/core';
+
+import CreateEmployerForm from '../../components/CreateEmployerForm/CreateEmployerForm'
+import EmployersList from '../../components/EmployersList/EmployersList'
+import { STORE, TEmployer } from '../../types/types';
+import {getAllEmployers} from "../../store/operations";
 
 type PropsFromRedux = {
     employers: Array<TEmployer>;
-    dispatch: Dispatch;
+    dispatch: Dispatch<any>;
 }
 
 const Employers = (props: PropsFromRedux) => {
     const { employers, dispatch } = props;
     useEffect(() => {
-        EmployerApi.getEmployers().then(res => {
-            dispatch(actions.setEmployers(res));
-        })
+        dispatch(getAllEmployers());
     }, [])
     return (
         <div>
@@ -26,7 +25,6 @@ const Employers = (props: PropsFromRedux) => {
             <CreateEmployerForm />
             <EmployersList employers={employers} />
         </div>
-        
     )
 }
 

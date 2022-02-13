@@ -6,18 +6,18 @@ export type STORE = {
 }
 
 export type TCustomer = {
-    id: number;
+    id?: number;
     name: string;
     email: string;
     age: number;
-    accounts: Array<TAccount>;
-    employers: Array<TEmployer>;
+    accounts?: Array<TAccount>;
+    employers?: Array<TEmployer>;
 }
 
 export type TAccount = {
     id?: number;
     number: string;
-    currency: Currency;
+    currency: TCurrency;
     balance: number;
     customer?: TCustomer;
 }
@@ -33,7 +33,7 @@ export type UpdateAccountData = {
     balance: number
 }
 
-export type Currency = 'UAH' | 'EUR' | 'USD' | 'GBP' | 'CHF';
+export type TCurrency = 'UAH' | 'EUR' | 'USD' | 'GBP' | 'CHF';
 
 export type CreateCustomerData = {
     name: string;
@@ -50,7 +50,7 @@ export type UpdateCustomerData = {
 
 export type CreateAccountData = {
     customerId: number;
-    currency: Currency;
+    currency: TCurrency;
 }
 
 export type CreateEmployerData = {

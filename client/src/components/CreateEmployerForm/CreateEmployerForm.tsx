@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { Button, createStyles, makeStyles, TextField, Theme } from "@material-ui/core";
+import { Button, createStyles, makeStyles, TextField, Theme } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-import EmployerApi from "../../api/employerApi";
-import { useDispatch } from "react-redux";
-import { actions } from "../../store/actions";
+
+
+import { saveEmployer } from '../../store/operations';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,9 +35,7 @@ const CreateEmployerForm = () => {
     
     const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        EmployerApi.create(employer).then(res => {
-            dispatch(actions.saveEmployer(res));
-        });
+        dispatch(saveEmployer(employer));
         setEmployer(initialEmployer);
     }
 
