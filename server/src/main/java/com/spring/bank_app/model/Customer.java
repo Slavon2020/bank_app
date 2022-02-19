@@ -30,7 +30,7 @@ public class Customer extends AbstractModel {
     @ManyToMany(mappedBy = "customers")
     private Set<Employer> employers;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
     private Set<Account> accounts;
 
     public Customer(Integer age, String email, String name) {

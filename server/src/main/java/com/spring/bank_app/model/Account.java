@@ -22,7 +22,7 @@ public  class Account extends AbstractModel {
     private BigDecimal balance;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
