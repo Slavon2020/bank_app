@@ -8,8 +8,8 @@ import com.spring.bank_app.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     @GetMapping
-    public List<Account> getAll() {
+    public Set<Account> getAll() {
         return accountService.getAll();
     }
 

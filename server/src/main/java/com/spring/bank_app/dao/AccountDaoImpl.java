@@ -4,12 +4,11 @@ import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Account;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @Transactional
@@ -28,7 +27,7 @@ public class AccountDaoImpl implements Dao<Account> {
 
     @Override
     public boolean delete(Account account) {
-        long id = account.getId();
+        Long id = account.getId();
         int isDeleted = em.createQuery("delete from Account a where a.id=:id")
                 .setParameter("id", id)
                 .executeUpdate();
@@ -36,23 +35,23 @@ public class AccountDaoImpl implements Dao<Account> {
     }
 
     @Override
-    public void deleteAll(List<Account> accounts) {
+    public void deleteAll(Set<Account> accounts) {
         accounts.forEach(this::delete);
     }
 
     @Override
-    public void saveAll(List<Account> accounts) {
+    public void saveAll(Set<Account> accounts) {
         accounts.forEach(this::save);
     }
 
     @Override
-    public List<Account> findAll() {
-        List<Account> allAccounts = em.createQuery("select a from Account a", Account.class).getResultList();
+    public Set<Account> findAll() {
+        Set<Account> allAccounts = new HashSet<Account>(em.createQuery("select a from Account a", Account.class).getResultList());
         return allAccounts;
     }
 
     @Override
-    public boolean deleteById(long id) {
+    public boolean deleteById(Long id) {
         int isDeleted = em.createQuery("delete from Account a where a.id=:id")
                 .setParameter("id", id)
                 .executeUpdate();
@@ -60,7 +59,7 @@ public class AccountDaoImpl implements Dao<Account> {
     }
 
     @Override
-    public Account getById(long id) {
+    public Account getById(Long id) {
         Optional<Account> account = Optional.ofNullable(
                 em.createQuery(
                         "SELECT a FROM Account a WHERE a.id =:id", Account.class)

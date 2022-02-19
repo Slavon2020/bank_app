@@ -7,8 +7,9 @@ import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @Transactional
@@ -36,22 +37,22 @@ public class CustomerDaoImpl implements Dao<Customer> {
     }
 
     @Override
-    public void deleteAll(List<Customer> customers) {
+    public void deleteAll(Set<Customer> customers) {
         customers.forEach(this::delete);
     }
 
     @Override
-    public void saveAll(List<Customer> customers) {
+    public void saveAll(Set<Customer> customers) {
         customers.forEach(this::save);
     }
 
     @Override
-    public List<Customer> findAll() {
-        return em.createQuery("select c from Customer c", Customer.class).getResultList();
+    public Set<Customer> findAll() {
+        return new HashSet<Customer>(em.createQuery("select c from Customer c", Customer.class).getResultList());
     }
 
     @Override
-    public boolean deleteById(long id) {
+    public boolean deleteById(Long id) {
         int isDeleted = em.createQuery("delete from Customer c where c.id=:id")
                 .setParameter("id", id)
                 .executeUpdate();
@@ -59,7 +60,7 @@ public class CustomerDaoImpl implements Dao<Customer> {
     }
 
     @Override
-    public Customer getById(long id) {
+    public Customer getById(Long id) {
         Optional<Customer> customer = Optional.ofNullable(
                  em.createQuery(
                  "SELECT c FROM Customer c WHERE c.id =:id", Customer.class)

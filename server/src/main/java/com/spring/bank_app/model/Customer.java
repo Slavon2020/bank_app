@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,14 +30,13 @@ public class Customer extends AbstractModel {
     @ManyToMany(mappedBy = "customers")
     private Set<Employer> employers;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "customer_id")
-    private List<Account> accounts;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Account> accounts;
 
     public Customer(Integer age, String email, String name) {
         this.name = name;
         this.email = email;
         this.age = age;
-        this.accounts = new ArrayList<>();
+        this.accounts = new HashSet<>();
     }
 }

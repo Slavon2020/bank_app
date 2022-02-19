@@ -4,7 +4,7 @@ import com.spring.bank_app.dao.EmployerDaoImpl;
 import com.spring.bank_app.model.Employer;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class EmployerService {
@@ -18,7 +18,7 @@ public class EmployerService {
         return employerDao.save(employer);
     }
 
-    public List<Employer> getEmployers() {
+    public Set<Employer> getEmployers() {
         return employerDao.getEmployers();
     }
 

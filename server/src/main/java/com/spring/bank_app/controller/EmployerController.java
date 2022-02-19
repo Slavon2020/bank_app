@@ -5,8 +5,8 @@ import com.spring.bank_app.service.EmployerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/employers")
@@ -23,7 +23,7 @@ public class EmployerController {
     }
 
     @GetMapping
-    public List<Employer> getEmployers() {
+    public Set<Employer> getEmployers() {
         return employerService.getEmployers();
     }
 

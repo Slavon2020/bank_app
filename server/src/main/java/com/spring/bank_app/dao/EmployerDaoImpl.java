@@ -5,8 +5,9 @@ import com.spring.bank_app.model.Employer;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 @Transactional
@@ -33,22 +34,22 @@ public class EmployerDaoImpl implements Dao<Employer> {
     }
 
     @Override
-    public void deleteAll(List<Employer> employers) {
+    public void deleteAll(Set<Employer> employers) {
         employers.forEach(this::delete);
     }
 
     @Override
-    public void saveAll(List<Employer> employers) {
+    public void saveAll(Set<Employer> employers) {
         employers.forEach(this::save);
     }
 
     @Override
-    public List<Employer> findAll() {
-        return em.createQuery("select e from Employer e", Employer.class).getResultList();
+    public Set<Employer> findAll() {
+        return new HashSet<Employer>(em.createQuery("select e from Employer e", Employer.class).getResultList());
     }
 
     @Override
-    public boolean deleteById(long id) {
+    public boolean deleteById(Long id) {
         int isDeleted = em.createQuery("delete from Employer e where e.id=:id")
                 .setParameter("id", id)
                 .executeUpdate();
@@ -56,7 +57,7 @@ public class EmployerDaoImpl implements Dao<Employer> {
     }
 
     @Override
-    public Employer getById(long id) {
+    public Employer getById(Long id) {
         Optional<Employer> employer = Optional.ofNullable(
                 em.createQuery(
                                 "SELECT e FROM Employer e WHERE e.id =:id", Employer.class)
@@ -66,8 +67,8 @@ public class EmployerDaoImpl implements Dao<Employer> {
         return employer.orElseThrow();
     }
 
-    public List<Employer> getEmployers() {
-        return em.createQuery("select e from Employer e", Employer.class).getResultList();
+    public Set<Employer> getEmployers() {
+        return new HashSet<Employer>(em.createQuery("select e from Employer e", Employer.class).getResultList());
     }
 
     public Employer update(Employer employer) {

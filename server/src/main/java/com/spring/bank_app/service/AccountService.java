@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class AccountService {
@@ -32,7 +32,7 @@ public class AccountService {
         return newAccount;
     }
 
-    public List<Account> getAll() {
+    public Set<Account> getAll() {
         return accountDao.findAll();
     }
 

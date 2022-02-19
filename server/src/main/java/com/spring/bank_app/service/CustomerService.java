@@ -6,7 +6,7 @@ import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomerService {
@@ -19,7 +19,7 @@ public class CustomerService {
     public Customer getCustomerInfo(Long id) {
         return this.customerDaoImpl.getById(id);
     }
-    public List<Customer> getAllCustomersInfo() {
+    public Set<Customer> getAllCustomersInfo() {
         return this.customerDaoImpl.findAll();
     }
 
@@ -33,7 +33,7 @@ public class CustomerService {
         return customerDaoImpl.update(customerDto);
     }
 
-    public boolean deleteCustomer(long id) {
+    public boolean deleteCustomer(Long id) {
         return customerDaoImpl.deleteById(id);
     }
 

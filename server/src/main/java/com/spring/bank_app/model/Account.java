@@ -20,8 +20,10 @@ public  class Account extends AbstractModel {
     private String number;
     private Currency currency;
     private BigDecimal balance;
+
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Account(Customer customer, Currency currency ) {

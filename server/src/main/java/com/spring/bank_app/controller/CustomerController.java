@@ -7,8 +7,8 @@ import com.spring.bank_app.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -27,7 +27,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> getAllCustomersInfo() {
+    public Set<Customer> getAllCustomersInfo() {
         return this.customerService.getAllCustomersInfo();
     }
 
