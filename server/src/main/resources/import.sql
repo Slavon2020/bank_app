@@ -1,10 +1,10 @@
-INSERT into employer (id, address, name ) values (1, 'USA', 'Google');
-INSERT into employer (id, address, name ) values (2, 'USA', 'Facebook');
-INSERT into employer (id, address, name ) values (3, 'Ukraine', 'Venbest');
+INSERT into employers (id, address, name ) values (1, 'USA', 'Google');
+INSERT into employers (id, address, name ) values (2, 'USA', 'Facebook');
+INSERT into employers (id, address, name ) values (3, 'Ukraine', 'Venbest');
 
-INSERT into customer(id, age, email, name) values (1, 30, 'slava@mail.com', 'slava');
-INSERT into customer(id, age, email, name) values (2, 25, 'alex@mail.com', 'alex');
-INSERT into customer(id, age, email, name) values (3, 43, 'viktor@mail.com', 'viktor');
+INSERT into customers(id, age, email, name) values (1, 30, 'slava@mail.com', 'slava');
+INSERT into customers(id, age, email, name) values (2, 25, 'alex@mail.com', 'alex');
+INSERT into customers(id, age, email, name) values (3, 43, 'viktor@mail.com', 'viktor');
 
 INSERT into accounts(id, balance, customer_id, number, currency) values (1, 1500, 1, 'accnumber1', 1);
 INSERT into accounts(id, balance, customer_id, number, currency) values (2, 10000, 1, 'accnumber2', 0);

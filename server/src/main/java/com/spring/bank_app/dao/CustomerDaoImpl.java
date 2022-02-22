@@ -5,14 +5,15 @@ import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
-@Transactional
 public class CustomerDaoImpl implements Dao<Customer> {
     private final EntityManager em;
 

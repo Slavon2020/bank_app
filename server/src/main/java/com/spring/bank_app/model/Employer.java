@@ -1,21 +1,26 @@
 package com.spring.bank_app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+//@EqualsAndHashCode(callSuper = true)
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Employer")
-public class Employer extends AbstractModel {
+//@EqualsAndHashCode
+@Table(name = "employers")
+public class Employer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
     private String address;
@@ -28,4 +33,17 @@ public class Employer extends AbstractModel {
     )
     @JsonIgnore
     private Set<Customer> customers;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employer employer = (Employer) o;
+        return Objects.equals(id, employer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

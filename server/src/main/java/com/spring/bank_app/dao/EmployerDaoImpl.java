@@ -3,14 +3,15 @@ package com.spring.bank_app.dao;
 import com.spring.bank_app.interfaces.Dao;
 import com.spring.bank_app.model.Employer;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
-@Transactional
 public class EmployerDaoImpl implements Dao<Employer> {
     private final EntityManager em;
 

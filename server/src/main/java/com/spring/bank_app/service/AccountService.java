@@ -9,12 +9,14 @@ import com.spring.bank_app.model.Account;
 import com.spring.bank_app.model.Currency;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Service
+@Transactional
 public class AccountService {
     private final AccountDaoImpl accountDao;
     private final CustomerDaoImpl customerDao;

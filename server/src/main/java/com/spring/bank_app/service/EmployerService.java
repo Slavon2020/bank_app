@@ -3,10 +3,12 @@ package com.spring.bank_app.service;
 import com.spring.bank_app.dao.EmployerDaoImpl;
 import com.spring.bank_app.model.Employer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 @Service
+@Transactional
 public class EmployerService {
     private final EmployerDaoImpl employerDao;
 

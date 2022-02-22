@@ -1,24 +1,30 @@
 package com.spring.bank_app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
+//@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
+//@EqualsAndHashCode
 @NoArgsConstructor
-@Table(name = "Customer")
-public class Customer extends AbstractModel {
+@AllArgsConstructor
+@Table(name = "customers",  uniqueConstraints = {
+        @UniqueConstraint(
+                columnNames = {"email"}
+        )
+})
+public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
     private String email;
@@ -28,15 +34,21 @@ public class Customer extends AbstractModel {
     private Integer phoneNumber;
 
     @ManyToMany(mappedBy = "customers")
-    private Set<Employer> employers;
+    private Set<Employer> employers = new HashSet<>();
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Account> accounts;
 
-    public Customer(Integer age, String email, String name) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.accounts = new HashSet<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -5,10 +5,12 @@ import com.spring.bank_app.dto.CustomerDto.CustomerDto;
 import com.spring.bank_app.dto.CustomerEmployerDto;
 import com.spring.bank_app.model.Customer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 @Service
+@Transactional
 public class CustomerService {
     private final CustomerDaoImpl customerDaoImpl;
 
@@ -33,6 +35,7 @@ public class CustomerService {
         return customerDaoImpl.update(customerDto);
     }
 
+    @Transactional
     public boolean deleteCustomer(Long id) {
         return customerDaoImpl.deleteById(id);
     }
